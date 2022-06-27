@@ -77,7 +77,7 @@
     (radio-target . org-textile-identity)
     (section . org-textile-identity)
     (special-block . org-textile-identity)
-    (src-block . org-textile-identity)
+    (src-block . org-textile-src-block)
     (statistics-cookie . org-textile-identity)
     (strike-through . org-textile-strike-through)
     (subscript . org-textile-identity)
@@ -209,6 +209,17 @@ information."
   (let ((value (org-element-property :value example-block)))
     (concat "bc.. " value "\np. <!-- protecting the space after the dot -->")))
 
+
+(defun org-textile-src-block (src-block contents info)
+  "Transcode a SRC-BLOCK element from Org into Textile format.
+CONTENTS holds the contents of the item.  INFO is a plist holding
+contextual information."
+  (let ((lang (org-element-property :language src-block))
+        (code (car (org-export-unravel-code src-block))))
+    (format "<pre><code class=\"%s\">
+%s
+</code></pre>" lang code)
+))
 
 ;;; Table
 (defun org-textile-table (table contents info)
